@@ -1,0 +1,2 @@
+# Dutch Word of the Day — no external dependencies required.
+# Uses only the Python standard library + macOS osascript.
