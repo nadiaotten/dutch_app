@@ -1,142 +1,190 @@
-# Dutch Word of the Day
+# Dutch Word
 
-A macOS app to learn Dutch vocabulary through daily quizzes, flashcards, and free practice sessions.
+A Dutch vocabulary trainer with three modes:
 
----
+- `Daily` for one persistent word per day
+- `Practice` for typed translation drills
+- `Study` for flashcards and review rounds
 
-## Files
+This repo now includes:
+
+- a static web app / PWA you can deploy from GitHub and use on your phone
+- the original macOS Python scripts, kept for the desktop workflow
+
+## Web App
+
+The new web version is a static app built from:
 
 | File | Purpose |
 |---|---|
-| `dutch_word.py` | Daily quiz — runs automatically 3x/day via launchd |
-| `practice.py` | Free practice — type Dutch translations, on demand |
-| `study.py` | Flashcards — see English, think of Dutch, flip to check |
-| `vocabulary.json` | 206 Dutch words with translations, examples, and difficulty levels (A1/A2/B1) |
-| `com.nadia.dutchword.plist` | launchd config for automatic scheduling |
-| `install.sh` | One-command installer |
-| `.word_history.json` | Auto-generated — tracks shown words to avoid repeats |
-| `.word_today.json` | Auto-generated — stores today's quiz word |
+| `index.html` | App shell and mobile-friendly layout |
+| `styles.css` | Responsive styling |
+| `app.js` | Daily, practice, and study logic in the browser |
+| `manifest.webmanifest` | Installable PWA metadata |
+| `sw.js` | Service worker for offline caching |
+| `assets/` | App icons |
+| `.github/workflows/deploy-pages.yml` | GitHub Pages deployment workflow |
+| `vocabulary.json` | Shared vocabulary source for both web and Python versions |
 
----
+### What the web app keeps
 
-## Three Modes
+- **Daily mode** keeps one active word until you answer it correctly
+- **Practice mode** repeats missed words until you get them right
+- **Study mode** sends "Not yet" cards into a review round
+- **Progress is saved locally** in your browser using `localStorage`
+- **The app can be installed** to your phone home screen
 
-### 1. Daily Quiz (`dutch_word.py`) — automatic
+### Web app limitation
 
-Runs automatically at **9:00 AM**, **3:00 PM**, and **5:00 PM**. Shows an English word and asks you to type the Dutch translation.
+The original Mac version used `launchd` to force scheduled popups. The GitHub Pages version cannot guarantee background alerts while the app is closed.
 
-- **Correct answer** → next run gives a new word
-- **Wrong / I don't know** → same word comes back at the next scheduled time
-- **Later** → dismisses the quiz and retries in 30 minutes
-- The word's difficulty level (A1/A2/B1) is shown in the prompt
+In the web version:
 
-```bash
-python3 "/Users/notte1/Documents/NADIA/DUTCH APP/dutch_word.py"
-```
+- the daily word is still persistent
+- the `Later` action still snoozes the quiz
+- reminders work best when the app is installed and opened regularly
 
-### 2. Practice (`practice.py`) — on demand
+If you later want true scheduled push notifications while the app is closed, that will require a backend service.
 
-Continuous quiz session. Words you get wrong come back until you get them right. Starts with a level picker: A1, A2, B1, or All.
+## Deploy To GitHub Pages
 
-```bash
-python3 "/Users/notte1/Documents/NADIA/DUTCH APP/practice.py"
-```
+### 1. Push the repo to GitHub
 
-### 3. Study (`study.py`) — on demand
+Commit your changes and push this repository to GitHub.
 
-Flashcard mode. See the English word, think of the Dutch translation, press Flip to check. Cards you don't know cycle back. Starts with a level picker.
+### 2. Enable Pages
 
-```bash
-python3 "/Users/notte1/Documents/NADIA/DUTCH APP/study.py"
-```
+In your GitHub repository:
 
----
+1. Open `Settings`
+2. Open `Pages`
+3. Under `Build and deployment`, use **GitHub Actions**
 
-## Quick Start
+The workflow in `.github/workflows/deploy-pages.yml` will publish the static app when you push to `main` or `master`.
 
-### 1. Test it right now
+### 3. Open the deployed app
 
-```bash
-python3 "/Users/notte1/Documents/NADIA/DUTCH APP/dutch_word.py"
-```
+After the workflow succeeds, your app will be available at:
 
-### 2. Install the daily schedule
+`https://<your-github-username>.github.io/<your-repo-name>/`
 
-**Option A — one command:**
+## Use It On Your Phone
 
-```bash
-bash "/Users/notte1/Documents/NADIA/DUTCH APP/install.sh"
-```
+### iPhone / iPad
 
-**Option B — manual steps:**
+1. Open the GitHub Pages URL in Safari
+2. Tap `Share`
+3. Tap `Add to Home Screen`
 
-```bash
-cp "/Users/notte1/Documents/NADIA/DUTCH APP/com.nadia.dutchword.plist" \
-   ~/Library/LaunchAgents/com.nadia.dutchword.plist
+### Android
 
-launchctl load ~/Library/LaunchAgents/com.nadia.dutchword.plist
-```
+1. Open the GitHub Pages URL in Chrome
+2. Open the browser menu
+3. Tap `Install app` or `Add to Home Screen`
 
-### 3. Change the notification times
+Once installed, it behaves more like a normal app and can store your daily state locally on that device.
 
-Edit the plist (or the copy in `~/Library/LaunchAgents/`). The `StartCalendarInterval` array contains one entry per scheduled time (Hour is 0-23):
+## Local Preview
 
-After editing, reload:
+Because the app loads `vocabulary.json` and uses a service worker, preview it from a local web server instead of opening `index.html` directly from Finder.
+
+Example:
 
 ```bash
-launchctl unload ~/Library/LaunchAgents/com.nadia.dutchword.plist
-launchctl load   ~/Library/LaunchAgents/com.nadia.dutchword.plist
+python3 -m http.server 8000
 ```
 
----
+Then open:
+
+```text
+http://localhost:8000/
+```
+
+## Learning Modes
+
+### 1. Daily
+
+Shows one English word and asks for the Dutch translation.
+
+- **Correct**: clears today's word and picks a new one next time
+- **Wrong**: lets you retry, then shows a hint after repeated misses
+- **I don't know**: reveals the answer and example
+- **Later**: snoozes the quiz for 30 minutes in the browser
+
+### 2. Practice
+
+Continuous typing practice with a level picker: `A1`, `A2`, `B1`, or `All`.
+
+- wrong answers come back later in the same session
+- the session ends with a score summary
+
+### 3. Study
+
+Flashcards with the same level picker.
+
+- press `Flip` to reveal the answer
+- choose `Got it` or `Not yet`
+- cards marked `Not yet` come back in a review round
 
 ## Difficulty Levels
 
-Every word in `vocabulary.json` has a `"level"` field:
+Every word in `vocabulary.json` has a `level` field:
 
 | Level | Count | Description |
 |---|---|---|
-| **A1** | 49 | Basics — huis, boek, goed, eten, dank je wel... |
-| **A2** | 93 | Everyday — fietsen, beginnen, winkel, samen... |
-| **B1** | 64 | Advanced — voorbereiden, uitzoeken, vertrouwen, gezellig... |
+| **A1** | 49 | Basics |
+| **A2** | 93 | Everyday vocabulary |
+| **B1** | 64 | More advanced vocabulary |
 
-In **practice** and **study** mode, you choose your level before starting. The **daily quiz** picks from all levels and shows the level tag in the prompt.
+## Add Your Own Words
 
----
-
-## Managing the Schedule
-
-| Action | Command |
-|---|---|
-| **Enable** | `launchctl load ~/Library/LaunchAgents/com.nadia.dutchword.plist` |
-| **Disable** | `launchctl unload ~/Library/LaunchAgents/com.nadia.dutchword.plist` |
-| **Run now** | `launchctl start com.nadia.dutchword` |
-| **Check status** | `launchctl list \| grep dutchword` |
-| **View logs** | `cat /tmp/dutchword.log` |
-| **View errors** | `cat /tmp/dutchword.err` |
-
----
-
-## Adding Your Own Words
-
-Edit `vocabulary.json`. Each entry has four fields:
+Edit `vocabulary.json`. Each item looks like this:
 
 ```json
 {"dutch": "huis", "english": "house", "example": "Ik woon in een groot huis.", "level": "A1"}
 ```
 
-The script will automatically cycle through all words before repeating any.
+Required fields:
 
----
+- `dutch`
+- `english`
+- `example`
+- `level`
+
+## Legacy macOS Version
+
+The original desktop scripts are still in the repo:
+
+| File | Purpose |
+|---|---|
+| `dutch_word.py` | Daily quiz with macOS dialogs |
+| `practice.py` | On-demand typing drills |
+| `study.py` | On-demand flashcards |
+| `com.nadia.dutchword.plist` | `launchd` schedule |
+| `install.sh` | Installs the Mac schedule |
+| `.word_history.json` | Auto-generated rotation history |
+| `.word_today.json` | Auto-generated daily word state |
+
+### Run the macOS scripts manually
+
+```bash
+python3 dutch_word.py
+python3 practice.py
+python3 study.py
+```
+
+### Install the macOS daily schedule
+
+```bash
+bash install.sh
+```
 
 ## Dependencies
 
-**None.** Uses only the Python standard library and macOS's built-in `osascript`. No `pip install` required.
+### Web app
 
----
+No build step is required for deployment. It is a plain static site.
 
-## Troubleshooting
+### macOS scripts
 
-- **No dialog appears?** Open System Settings → Notifications → Script Editor and make sure notifications are allowed.
-- **Wrong Python path?** Run `which python3` and update the path in the plist if it differs from `/usr/bin/python3`.
-- **Missed quiz?** If your Mac was asleep at the scheduled time, launchd fires the quiz shortly after waking.
+No external Python packages are required. The scripts use the Python standard library and macOS `osascript`.
