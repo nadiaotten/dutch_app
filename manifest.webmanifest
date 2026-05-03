@@ -1,0 +1,25 @@
+{
+  "name": "Dutch Word",
+  "short_name": "Dutch Word",
+  "description": "Daily quizzes, typing drills, and flashcards for Dutch vocabulary.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#edf3ff",
+  "theme_color": "#173b7a",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

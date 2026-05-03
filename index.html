@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173b7a">
+  <meta name="description" content="Practice Dutch vocabulary with daily quizzes, typing drills, and flashcards.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/icon.svg">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Dutch Word</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <p class="eyebrow">Installable web app</p>
+      <h1>Dutch Word</h1>
+      <p class="hero-copy">
+        The same daily quiz, practice drills, and flashcards, now deployable from GitHub and usable on your phone.
+      </p>
+      <div class="hero-actions">
+        <button id="install-button" class="ghost-button hidden" type="button">Install app</button>
+        <button id="notifications-button" class="ghost-button" type="button">Enable reminders</button>
+      </div>
+      <p id="app-status" class="app-status" aria-live="polite">Loading vocabulary...</p>
+    </header>
+
+    <nav class="mode-tabs" aria-label="Learning modes">
+      <button class="tab-button is-active" type="button" data-mode="daily">Daily</button>
+      <button class="tab-button" type="button" data-mode="practice">Practice</button>
+      <button class="tab-button" type="button" data-mode="study">Study</button>
+    </nav>
+
+    <main>
+      <section id="daily-panel" class="panel is-active" aria-labelledby="daily-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="daily-heading">Daily Quiz</h2>
+            <p class="panel-copy">One word stays active until you get it right.</p>
+          </div>
+          <span id="daily-level-chip" class="chip">Daily</span>
+        </div>
+
+        <div id="daily-card" class="card">
+          <p id="daily-state" class="state-copy">Preparing today's word...</p>
+          <div id="daily-question-wrap" class="question-wrap hidden">
+            <p class="label">Translate to Dutch</p>
+            <p id="daily-question" class="question"></p>
+            <label class="field-label" for="daily-answer">Your answer</label>
+            <input id="daily-answer" class="text-input" type="text" autocomplete="off" spellcheck="false">
+            <div class="button-row">
+              <button id="daily-check" class="primary-button" type="button">Check</button>
+              <button id="daily-idk" class="secondary-button" type="button">I don't know</button>
+              <button id="daily-later" class="ghost-button" type="button">Later</button>
+            </div>
+          </div>
+          <div id="daily-result" class="result-box hidden" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="practice-panel" class="panel" aria-labelledby="practice-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="practice-heading">Practice</h2>
+            <p class="panel-copy">Type the Dutch answer. Words you skip come back until you know them.</p>
+          </div>
+        </div>
+
+        <div class="card stacked-card">
+          <div class="level-picker" role="group" aria-label="Practice level">
+            <button class="level-button is-selected" type="button" data-practice-level="All">All</button>
+            <button class="level-button" type="button" data-practice-level="A1">A1</button>
+            <button class="level-button" type="button" data-practice-level="A2">A2</button>
+            <button class="level-button" type="button" data-practice-level="B1">B1</button>
+          </div>
+          <button id="practice-start" class="primary-button" type="button">Start practice</button>
+        </div>
+
+        <div id="practice-card" class="card hidden">
+          <div class="session-topline">
+            <span id="practice-progress" class="chip">Session ready</span>
+            <span id="practice-score" class="chip muted">Correct 0</span>
+          </div>
+          <p class="label">Translate to Dutch</p>
+          <p id="practice-question" class="question"></p>
+          <label class="field-label" for="practice-answer">Your answer</label>
+          <input id="practice-answer" class="text-input" type="text" autocomplete="off" spellcheck="false">
+          <div class="button-row">
+            <button id="practice-check" class="primary-button" type="button">Check</button>
+            <button id="practice-idk" class="secondary-button" type="button">I don't know</button>
+            <button id="practice-stop" class="ghost-button" type="button">Stop</button>
+          </div>
+          <div id="practice-feedback" class="result-box hidden" aria-live="polite"></div>
+        </div>
+
+        <div id="practice-summary" class="card hidden">
+          <h3>Practice summary</h3>
+          <p id="practice-summary-copy" class="summary-copy"></p>
+          <button id="practice-restart" class="secondary-button" type="button">Start another round</button>
+        </div>
+      </section>
+
+      <section id="study-panel" class="panel" aria-labelledby="study-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="study-heading">Study</h2>
+            <p class="panel-copy">Flip cards, then decide whether you knew the answer.</p>
+          </div>
+        </div>
+
+        <div class="card stacked-card">
+          <div class="level-picker" role="group" aria-label="Study level">
+            <button class="level-button is-selected" type="button" data-study-level="All">All</button>
+            <button class="level-button" type="button" data-study-level="A1">A1</button>
+            <button class="level-button" type="button" data-study-level="A2">A2</button>
+            <button class="level-button" type="button" data-study-level="B1">B1</button>
+          </div>
+          <button id="study-start" class="primary-button" type="button">Start study mode</button>
+        </div>
+
+        <div id="study-card" class="card hidden">
+          <div class="session-topline">
+            <span id="study-progress" class="chip">Card 0</span>
+            <span id="study-score" class="chip muted">Known 0</span>
+          </div>
+          <p id="study-front" class="question"></p>
+          <div id="study-back" class="answer-block hidden">
+            <p id="study-answer" class="answer-line"></p>
+            <p id="study-example" class="example-line"></p>
+          </div>
+          <div id="study-front-actions" class="button-row">
+            <button id="study-flip" class="primary-button" type="button">Flip</button>
+            <button id="study-stop-front" class="ghost-button" type="button">Stop</button>
+          </div>
+          <div id="study-back-actions" class="button-row hidden">
+            <button id="study-got-it" class="primary-button" type="button">Got it</button>
+            <button id="study-not-yet" class="secondary-button" type="button">Not yet</button>
+            <button id="study-stop-back" class="ghost-button" type="button">Stop</button>
+          </div>
+          <div id="study-feedback" class="result-box hidden" aria-live="polite"></div>
+        </div>
+
+        <div id="study-summary" class="card hidden">
+          <h3>Study summary</h3>
+          <p id="study-summary-copy" class="summary-copy"></p>
+          <button id="study-restart" class="secondary-button" type="button">Study again</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

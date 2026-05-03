@@ -81,6 +81,50 @@ def quiz_prompt(prompt_msg: str) -> tuple[str, str]:
         sys.exit(1)
 
 
+def pick_level() -> str | None:
+    """Show a level picker dialog. Returns 'A1', 'A2', 'B1', 'All', or None on cancel."""
+    applescript = (
+        'display dialog "Choose a difficulty level:" '
+        'with title "🇳🇱 Dutch Practice" '
+        'buttons {"A1", "A2", "B1"} '
+        'default button "B1" '
+        'giving up after 0'
+    )
+    # osascript only supports 3 buttons max, so we use two dialogs
+    applescript_all = (
+        'display alert "🇳🇱 Dutch Practice" '
+        'message "What level do you want to practice?" '
+        'as informational '
+        'buttons {"All levels", "Pick a level"} '
+        'default button "Pick a level"'
+    )
+    try:
+        result = subprocess.run(
+            ["osascript", "-e", applescript_all],
+            check=True, capture_output=True, text=True,
+        )
+        if "All levels" in result.stdout:
+            return "All"
+
+        result = subprocess.run(
+            ["osascript", "-e", applescript],
+            check=True, capture_output=True, text=True,
+        )
+        output = result.stdout.strip()
+        for lvl in ("A1", "A2", "B1"):
+            if lvl in output:
+                return lvl
+        return "All"
+    except subprocess.CalledProcessError:
+        return None
+
+
+def filter_by_level(words: list[dict], level: str) -> list[dict]:
+    if level == "All":
+        return words
+    return [w for w in words if w.get("level") == level]
+
+
 def ask_word(word: dict) -> bool | None:
     """
     Quiz a single word. Returns:
@@ -130,7 +174,20 @@ def ask_word(word: dict) -> bool | None:
 
 
 def main() -> None:
-    words = load_vocabulary()
+    all_words = load_vocabulary()
+
+    level = pick_level()
+    if level is None:
+        return
+
+    words = filter_by_level(all_words, level)
+    if not words:
+        alert("🇳🇱 Practice", f"No words found for level {level}.")
+        return
+
+    level_label = level if level != "All" else "All levels"
+    alert("🇳🇱 Practice", f"Level: {level_label}\nWords: {len(words)}\n\nLet's go!")
+
     queue = random.sample(words, len(words))
     retry_queue: list[dict] = []
 

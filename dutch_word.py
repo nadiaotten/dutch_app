@@ -172,11 +172,13 @@ def run_quiz(word: dict, is_reminder: bool) -> None:
     dutch = word["dutch"].lower()
     english = word["english"]
     example = word.get("example", "")
+    level = word.get("level", "")
+    level_tag = f"  [{level}]" if level else ""
 
     if is_reminder:
-        label = f"⏰ Reminder! Translate to Dutch:\n\n\"{english}\""
+        label = f"⏰ Reminder!{level_tag}\n\nTranslate to Dutch:\n\n\"{english}\""
     else:
-        label = f"Translate to Dutch:\n\n\"{english}\""
+        label = f"New word!{level_tag}\n\nTranslate to Dutch:\n\n\"{english}\""
 
     attempt = 0
     while True:
@@ -191,6 +193,8 @@ def run_quiz(word: dict, is_reminder: bool) -> None:
 
         if button == "I don't know":
             reveal = f"The answer is:  {word['dutch']}"
+            if level:
+                reveal += f"  [{level}]"
             if example:
                 reveal += f"\n\nExample:\n{example}"
             alert("🇳🇱 Don't worry, now you know!", reveal)
@@ -199,6 +203,8 @@ def run_quiz(word: dict, is_reminder: bool) -> None:
         # button == "Check"
         if answer == dutch:
             msg = f"✅  {word['dutch']}  =  {english}"
+            if level:
+                msg += f"  [{level}]"
             if example:
                 msg += f"\n\nExample:\n{example}"
             alert("🇳🇱 Correct! Goed gedaan!", msg)
@@ -209,12 +215,12 @@ def run_quiz(word: dict, is_reminder: bool) -> None:
         if attempt >= 3:
             hint = dutch[:len(dutch) // 2] + "..."
             label = (
-                f"❌ Not quite. Here is a hint:  \"{hint}\"\n\n"
+                f"❌ Not quite. Hint:  \"{hint}\"{level_tag}\n\n"
                 f"Translate to Dutch:\n\n\"{english}\""
             )
         else:
             label = (
-                f"❌ Not quite, try again!\n\n"
+                f"❌ Not quite, try again!{level_tag}\n\n"
                 f"Translate to Dutch:\n\n\"{english}\""
             )
 

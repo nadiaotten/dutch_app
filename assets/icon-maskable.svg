@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" fill="#173b7a" />
+  <rect x="56" y="56" width="400" height="400" rx="88" fill="#3b82f6" />
+  <circle cx="256" cy="220" r="120" fill="#ffffff" opacity="0.12" />
+  <path d="M164 156h184c20 0 36 16 36 36v128c0 20-16 36-36 36H164c-20 0-36-16-36-36V192c0-20 16-36 36-36Z" fill="#ffffff" />
+  <path d="M180 210h48v92h-48zM284 210h48v92h-48z" fill="#173b7a" />
+  <path d="M228 210h56v30h-56zM228 272h56v30h-56z" fill="#ff7a59" />
+  <text x="256" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="58" font-weight="700" fill="#ffffff">NL</text>
+</svg>
