@@ -9,6 +9,7 @@ const DAILY_SNOOZE_MS = 30 * 60 * 1000;
 
 const state = {
   words: [],
+  verbs: [],
   ready: false,
   installPrompt: null,
   dailyAttempts: 0,
@@ -17,6 +18,9 @@ const state = {
   practiceSession: null,
   studyLevel: "All",
   studySession: null,
+  verbsLevel: "All",
+  verbsForm: "Both",
+  verbsSession: null,
 };
 
 const els = {
@@ -28,6 +32,7 @@ const els = {
     daily: document.querySelector("#daily-panel"),
     practice: document.querySelector("#practice-panel"),
     study: document.querySelector("#study-panel"),
+    verbs: document.querySelector("#verbs-panel"),
   },
   daily: {
     state: document.querySelector("#daily-state"),
@@ -63,6 +68,7 @@ const els = {
     progress: document.querySelector("#study-progress"),
     score: document.querySelector("#study-score"),
     front: document.querySelector("#study-front"),
+    word: document.querySelector(".study-word"),
     back: document.querySelector("#study-back"),
     answer: document.querySelector("#study-answer"),
     example: document.querySelector("#study-example"),
@@ -77,6 +83,24 @@ const els = {
     summary: document.querySelector("#study-summary"),
     summaryCopy: document.querySelector("#study-summary-copy"),
     restart: document.querySelector("#study-restart"),
+  },
+  verbs: {
+    levelButtons: [...document.querySelectorAll("[data-verbs-level]")],
+    formRadios: [...document.querySelectorAll("input[name='verb-form']")],
+    start: document.querySelector("#verbs-start"),
+    card: document.querySelector("#verbs-card"),
+    label: document.querySelector("#verbs-label"),
+    progress: document.querySelector("#verbs-progress"),
+    score: document.querySelector("#verbs-score"),
+    question: document.querySelector("#verbs-question"),
+    answer: document.querySelector("#verbs-answer"),
+    check: document.querySelector("#verbs-check"),
+    idk: document.querySelector("#verbs-idk"),
+    stop: document.querySelector("#verbs-stop"),
+    feedback: document.querySelector("#verbs-feedback"),
+    summary: document.querySelector("#verbs-summary"),
+    summaryCopy: document.querySelector("#verbs-summary-copy"),
+    restart: document.querySelector("#verbs-restart"),
   },
 };
 
@@ -146,6 +170,13 @@ function vocabularyForLevel(level) {
     return state.words;
   }
   return state.words.filter((word) => word.level === level);
+}
+
+function verbsForLevel(level) {
+  if (level === "All") {
+    return state.verbs;
+  }
+  return state.verbs.filter((verb) => verb.level === level);
 }
 
 function setSelectedLevel(buttons, key, value) {
@@ -530,17 +561,13 @@ function renderStudyCard() {
 
   els.study.card.classList.remove("hidden");
   els.study.summary.classList.add("hidden");
-  els.study.front.textContent = `Card ${session.roundSeen + 1} / ${session.roundSize}
-
-${session.currentWord.english}
-
-What is this in Dutch?`;
-  els.study.answer.textContent = `${session.currentWord.english} -> ${session.currentWord.dutch}`;
+  els.study.word.textContent = session.currentWord.dutch;
+  els.study.answer.textContent = `🇬🇧 ${session.currentWord.english}`;
   els.study.example.textContent = session.currentWord.example || "";
   els.study.back.classList.add("hidden");
   els.study.frontActions.classList.remove("hidden");
   els.study.backActions.classList.add("hidden");
-  els.study.progress.textContent = session.level;
+  els.study.progress.textContent = `Card ${session.roundSeen + 1} / ${session.roundSize}`;
   els.study.score.textContent = `Known ${session.known}`;
 }
 
@@ -642,6 +669,207 @@ function scoreStudyCard(knewIt) {
   }, 900);
 }
 
+function startVerbs() {
+  const verbs = verbsForLevel(state.verbsLevel);
+  hideMessage(els.verbs.feedback);
+
+  if (!verbs.length) {
+    showMessage(els.verbs.feedback, "warning", `No verbs found for level ${state.verbsLevel}.`);
+    els.verbs.card.classList.remove("hidden");
+    return;
+  }
+
+  state.verbsSession = {
+    level: state.verbsLevel === "All" ? "All levels" : state.verbsLevel,
+    queue: shuffle(verbs),
+    retryQueue: [],
+    currentVerb: null,
+    currentForm: null,
+    attempt: 0,
+    total: 0,
+    correct: 0,
+    wrong: 0,
+  };
+
+  els.verbs.summary.classList.add("hidden");
+  els.verbs.card.classList.remove("hidden");
+  els.verbs.answer.value = "";
+  showVerbsQuestion();
+}
+
+function showVerbsQuestion() {
+  const session = state.verbsSession;
+  if (!session) {
+    return;
+  }
+
+  if (session.queue.length === 0 && session.retryQueue.length === 0) {
+    finishVerbs();
+    return;
+  }
+
+  if (session.queue.length === 0) {
+    session.queue = shuffle(session.retryQueue);
+    session.retryQueue = [];
+  }
+
+  session.currentVerb = session.queue.shift();
+  session.attempt = 0;
+  hideMessage(els.verbs.feedback);
+
+  if (state.verbsForm === "Both") {
+    session.currentForm = sample(["Past", "Participle"]);
+  } else {
+    session.currentForm = state.verbsForm;
+  }
+
+  updateVerbsProgress();
+  renderVerbsCard();
+  els.verbs.answer.focus();
+  els.verbs.answer.value = "";
+}
+
+function renderVerbsCard() {
+  const session = state.verbsSession;
+  if (!session || !session.currentVerb) {
+    return;
+  }
+
+  const verb = session.currentVerb;
+  const infinitive = verb.infinitive;
+  const meaning = verb.meaning;
+
+  if (session.currentForm === "Past") {
+    els.verbs.label.textContent = "What is the past tense?";
+    els.verbs.question.textContent = `${infinitive} — ${meaning}`;
+  } else {
+    els.verbs.label.textContent = "What is the past participle?";
+    els.verbs.question.textContent = `${infinitive} — ${meaning}`;
+  }
+}
+
+function updateVerbsProgress() {
+  const session = state.verbsSession;
+  if (!session) {
+    return;
+  }
+
+  const totalVerbs = session.level === "All levels" ? state.verbs.length : verbsForLevel(session.level).length;
+  const current = session.total + 1;
+  els.verbs.progress.textContent = `Card ${current} / ${totalVerbs}`;
+  els.verbs.score.textContent = `Correct ${session.correct}`;
+}
+
+function handleVerbsCheck() {
+  const session = state.verbsSession;
+  if (!session || !session.currentVerb) {
+    return;
+  }
+
+  const answer = normalizeAnswer(els.verbs.answer.value);
+  if (!answer) {
+    showMessage(els.verbs.feedback, "warning", "Type an answer before checking.");
+    return;
+  }
+
+  const verb = session.currentVerb;
+  const correctAnswer = session.currentForm === "Past"
+    ? normalizeAnswer(verb.past_singular)
+    : normalizeAnswer(verb.participle);
+
+  if (answer === correctAnswer) {
+    session.total += 1;
+    session.correct += 1;
+    const auxiliary = verb.auxiliary ? ` (${verb.auxiliary})` : "";
+    const form = session.currentForm === "Past" ? verb.past_singular : `${verb.participle}${auxiliary}`;
+    showMessage(
+      els.verbs.feedback,
+      "success",
+      `<strong>Correct.</strong><br>${verb.infinitive} → ${form}<br><br>${verb.example || ""}`
+    );
+    window.setTimeout(() => {
+      hideMessage(els.verbs.feedback);
+      showVerbsQuestion();
+    }, 900);
+    return;
+  }
+
+  session.attempt += 1;
+  if (session.attempt >= 2) {
+    const hint = session.currentForm === "Past"
+      ? `${verb.past_singular.slice(0, Math.max(1, Math.floor(verb.past_singular.length / 2)))}...`
+      : `${verb.participle.slice(0, Math.max(1, Math.floor(verb.participle.length / 2)))}...`;
+    showMessage(
+      els.verbs.feedback,
+      "warning",
+      `<strong>Not quite.</strong><br>Hint: <strong>${hint}</strong>`
+    );
+  } else {
+    showMessage(els.verbs.feedback, "danger", "<strong>Not quite.</strong><br>Try again.");
+  }
+  els.verbs.answer.focus();
+  els.verbs.answer.select();
+}
+
+function handleVerbsReveal() {
+  const session = state.verbsSession;
+  if (!session || !session.currentVerb) {
+    return;
+  }
+
+  const verb = session.currentVerb;
+  const auxiliary = verb.auxiliary ? ` (${verb.auxiliary})` : "";
+  const form = session.currentForm === "Past" ? verb.past_singular : `${verb.participle}${auxiliary}`;
+  session.total += 1;
+  session.wrong += 1;
+  session.retryQueue.push(verb);
+  showMessage(
+    els.verbs.feedback,
+    "warning",
+    `<strong>The answer is ${form}.</strong><br>${verb.example || ""}`
+  );
+  window.setTimeout(() => {
+    hideMessage(els.verbs.feedback);
+    showVerbsQuestion();
+  }, 1200);
+}
+
+function handleVerbsStop() {
+  finishVerbs();
+}
+
+function buildVerbsSummary(session) {
+  if (session.total === 0) {
+    return "No verbs practiced. Tot de volgende keer!";
+  }
+
+  const score = Math.round((session.correct / session.total) * 100);
+  let closing = "Keep practicing, je kunt het!";
+  if (score === 100) {
+    closing = "Perfect! Ongelofelijk!";
+  } else if (score >= 70) {
+    closing = "Goed gedaan! Keep it up!";
+  }
+
+  return `Verbs practiced: ${session.total}
+Correct: ${session.correct}
+Wrong: ${session.wrong}
+Score: ${score}%
+
+${closing}`;
+}
+
+function finishVerbs() {
+  const session = state.verbsSession;
+  if (!session) {
+    return;
+  }
+
+  els.verbs.card.classList.add("hidden");
+  els.verbs.summary.classList.remove("hidden");
+  els.verbs.summaryCopy.textContent = buildVerbsSummary(session);
+}
+
 function activateMode(mode) {
   els.tabButtons.forEach((button) => {
     button.classList.toggle("is-active", button.dataset.mode === mode);
@@ -726,6 +954,14 @@ async function loadVocabulary() {
   return response.json();
 }
 
+async function loadVerbs() {
+  const response = await fetch("./verbs.json");
+  if (!response.ok) {
+    throw new Error(`Failed to load verbs: ${response.status}`);
+  }
+  return response.json();
+}
+
 function bindEvents() {
   els.tabButtons.forEach((button) => {
     button.addEventListener("click", () => activateMode(button.dataset.mode));
@@ -771,6 +1007,28 @@ function bindEvents() {
   els.study.stopBack.addEventListener("click", finishStudy);
   els.study.restart.addEventListener("click", startStudy);
 
+  els.verbs.levelButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      state.verbsLevel = button.dataset.verbsLevel;
+      setSelectedLevel(els.verbs.levelButtons, "verbsLevel", state.verbsLevel);
+    });
+  });
+  els.verbs.formRadios.forEach((radio) => {
+    radio.addEventListener("change", () => {
+      state.verbsForm = radio.value;
+    });
+  });
+  els.verbs.start.addEventListener("click", startVerbs);
+  els.verbs.check.addEventListener("click", handleVerbsCheck);
+  els.verbs.idk.addEventListener("click", handleVerbsReveal);
+  els.verbs.stop.addEventListener("click", handleVerbsStop);
+  els.verbs.restart.addEventListener("click", startVerbs);
+  els.verbs.answer.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      handleVerbsCheck();
+    }
+  });
+
   els.notificationsButton.addEventListener("click", requestReminders);
 
   document.addEventListener("visibilitychange", () => {
@@ -787,11 +1045,13 @@ async function init() {
   updateReminderButton();
   setSelectedLevel(els.practice.levelButtons, "practiceLevel", state.practiceLevel);
   setSelectedLevel(els.study.levelButtons, "studyLevel", state.studyLevel);
+  setSelectedLevel(els.verbs.levelButtons, "verbsLevel", state.verbsLevel);
 
   try {
     state.words = await loadVocabulary();
+    state.verbs = await loadVerbs();
     state.ready = true;
-    setStatus(`${state.words.length} words loaded. Install this app on your phone for quick practice.`);
+    setStatus(`${state.words.length} words and ${state.verbs.length} verbs loaded. Install this app on your phone for quick practice.`);
     renderDaily();
   } catch (error) {
     setStatus("Could not load the vocabulary list.");
