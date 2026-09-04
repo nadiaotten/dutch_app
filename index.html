@@ -30,6 +30,7 @@
       <button class="tab-button is-active" type="button" data-mode="daily">Daily</button>
       <button class="tab-button" type="button" data-mode="practice">Practice</button>
       <button class="tab-button" type="button" data-mode="study">Study</button>
+      <button class="tab-button" type="button" data-mode="verbs">Verbs</button>
     </nav>
 
     <main>
@@ -124,8 +125,15 @@
             <span id="study-progress" class="chip">Card 0</span>
             <span id="study-score" class="chip muted">Known 0</span>
           </div>
-          <p id="study-front" class="question"></p>
+
+          <div id="study-front" class="study-front-content">
+            <p class="study-label">🇳🇱 Dutch word</p>
+            <p class="study-word"></p>
+            <p class="study-instruction">What does this mean?</p>
+          </div>
+
           <div id="study-back" class="answer-block hidden">
+            <p class="study-label">Answer</p>
             <p id="study-answer" class="answer-line"></p>
             <p id="study-example" class="example-line"></p>
           </div>
@@ -145,6 +153,53 @@
           <h3>Study summary</h3>
           <p id="study-summary-copy" class="summary-copy"></p>
           <button id="study-restart" class="secondary-button" type="button">Study again</button>
+        </div>
+      </section>
+
+      <section id="verbs-panel" class="panel" aria-labelledby="verbs-heading">
+        <div class="panel-header">
+          <div>
+            <h2 id="verbs-heading">Verb Trainer</h2>
+            <p class="panel-copy">Practice irregular verb conjugations with past tense and participles.</p>
+          </div>
+        </div>
+
+        <div class="card stacked-card">
+          <div class="level-picker" role="group" aria-label="Verb level">
+            <button class="level-button is-selected" type="button" data-verbs-level="All">All</button>
+            <button class="level-button" type="button" data-verbs-level="A1">A1</button>
+            <button class="level-button" type="button" data-verbs-level="A2">A2</button>
+            <button class="level-button" type="button" data-verbs-level="B1">B1</button>
+          </div>
+          <div class="form-picker" role="group" aria-label="Verb form">
+            <label><input type="radio" name="verb-form" value="Both" checked> Both forms</label>
+            <label><input type="radio" name="verb-form" value="Past"> Past tense</label>
+            <label><input type="radio" name="verb-form" value="Participle"> Participle</label>
+          </div>
+          <button id="verbs-start" class="primary-button" type="button">Start verb practice</button>
+        </div>
+
+        <div id="verbs-card" class="card hidden">
+          <div class="session-topline">
+            <span id="verbs-progress" class="chip">Card 0</span>
+            <span id="verbs-score" class="chip muted">Correct 0</span>
+          </div>
+          <p class="label" id="verbs-label">What is the past tense?</p>
+          <p id="verbs-question" class="question"></p>
+          <label class="field-label" for="verbs-answer">Your answer</label>
+          <input id="verbs-answer" class="text-input" type="text" autocomplete="off" spellcheck="false">
+          <div class="button-row">
+            <button id="verbs-check" class="primary-button" type="button">Check</button>
+            <button id="verbs-idk" class="secondary-button" type="button">I don't know</button>
+            <button id="verbs-stop" class="ghost-button" type="button">Stop</button>
+          </div>
+          <div id="verbs-feedback" class="result-box hidden" aria-live="polite"></div>
+        </div>
+
+        <div id="verbs-summary" class="card hidden">
+          <h3>Verb practice summary</h3>
+          <p id="verbs-summary-copy" class="summary-copy"></p>
+          <button id="verbs-restart" class="secondary-button" type="button">Practice again</button>
         </div>
       </section>
     </main>
