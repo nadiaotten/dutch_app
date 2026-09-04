@@ -11,6 +11,7 @@ import random
 import subprocess
 import sys
 from pathlib import Path
+from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 VOCAB_FILE = SCRIPT_DIR / "vocabulary.json"
@@ -81,7 +82,7 @@ def quiz_prompt(prompt_msg: str) -> tuple[str, str]:
         sys.exit(1)
 
 
-def pick_level() -> str | None:
+def pick_level() -> Optional[str]:
     """Show a level picker dialog. Returns 'A1', 'A2', 'B1', 'All', or None on cancel."""
     applescript = (
         'display dialog "Choose a difficulty level:" '
@@ -125,7 +126,7 @@ def filter_by_level(words: list[dict], level: str) -> list[dict]:
     return [w for w in words if w.get("level") == level]
 
 
-def ask_word(word: dict) -> bool | None:
+def ask_word(word: dict) -> Optional[bool]:
     """
     Quiz a single word. Returns:
       True  = correct

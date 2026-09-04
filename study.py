@@ -9,6 +9,7 @@ import random
 import subprocess
 import sys
 from pathlib import Path
+from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 VOCAB_FILE = SCRIPT_DIR / "vocabulary.json"
@@ -50,7 +51,7 @@ def alert(title: str, message: str) -> None:
         print(f"[{title}] {message}", file=sys.stderr)
 
 
-def pick_level() -> str | None:
+def pick_level() -> Optional[str]:
     """Show a level picker dialog. Returns 'A1', 'A2', 'B1', 'All', or None on cancel."""
     applescript_all = (
         'display alert "🇳🇱 Dutch Study" '

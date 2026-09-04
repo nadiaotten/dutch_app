@@ -1,0 +1,272 @@
+[
+  {
+    "infinitive": "zijn",
+    "past_singular": "was",
+    "participle": "geweest",
+    "auxiliary": "hebben",
+    "meaning": "to be",
+    "level": "A1",
+    "example": "Ik was in Amsterdam."
+  },
+  {
+    "infinitive": "hebben",
+    "past_singular": "had",
+    "participle": "gehad",
+    "auxiliary": "hebben",
+    "meaning": "to have",
+    "level": "A1",
+    "example": "Ik had een boek."
+  },
+  {
+    "infinitive": "gaan",
+    "past_singular": "ging",
+    "participle": "gegaan",
+    "auxiliary": "zijn",
+    "meaning": "to go",
+    "level": "A1",
+    "example": "Ik ging naar school."
+  },
+  {
+    "infinitive": "doen",
+    "past_singular": "deed",
+    "participle": "gedaan",
+    "auxiliary": "hebben",
+    "meaning": "to do",
+    "level": "A1",
+    "example": "Ik deed mijn huiswerk."
+  },
+  {
+    "infinitive": "zien",
+    "past_singular": "zag",
+    "participle": "gezien",
+    "auxiliary": "hebben",
+    "meaning": "to see",
+    "level": "A1",
+    "example": "Ik zag een film."
+  },
+  {
+    "infinitive": "komen",
+    "past_singular": "kwam",
+    "participle": "gekomen",
+    "auxiliary": "zijn",
+    "meaning": "to come",
+    "level": "A1",
+    "example": "Ik kwam naar huis."
+  },
+  {
+    "infinitive": "geven",
+    "past_singular": "gaf",
+    "participle": "gegeven",
+    "auxiliary": "hebben",
+    "meaning": "to give",
+    "level": "A1",
+    "example": "Ik gaf hem een cadeau."
+  },
+  {
+    "infinitive": "nemen",
+    "past_singular": "nam",
+    "participle": "genomen",
+    "auxiliary": "hebben",
+    "meaning": "to take",
+    "level": "A1",
+    "example": "Ik nam de trein."
+  },
+  {
+    "infinitive": "lezen",
+    "past_singular": "las",
+    "participle": "gelezen",
+    "auxiliary": "hebben",
+    "meaning": "to read",
+    "level": "A1",
+    "example": "Ik las een boek."
+  },
+  {
+    "infinitive": "schrijven",
+    "past_singular": "schreef",
+    "participle": "geschreven",
+    "auxiliary": "hebben",
+    "meaning": "to write",
+    "level": "A1",
+    "example": "Ik schreef een brief."
+  },
+  {
+    "infinitive": "spreken",
+    "past_singular": "sprak",
+    "participle": "gesproken",
+    "auxiliary": "hebben",
+    "meaning": "to speak",
+    "level": "A2",
+    "example": "Ik sprak Nederlands."
+  },
+  {
+    "infinitive": "beginnen",
+    "past_singular": "begon",
+    "participle": "begonnen",
+    "auxiliary": "zijn",
+    "meaning": "to begin",
+    "level": "A2",
+    "example": "Ik begon te studeren."
+  },
+  {
+    "infinitive": "vinden",
+    "past_singular": "vond",
+    "participle": "gevonden",
+    "auxiliary": "hebben",
+    "meaning": "to find",
+    "level": "A2",
+    "example": "Ik vond mijn sleutels."
+  },
+  {
+    "infinitive": "weten",
+    "past_singular": "wist",
+    "participle": "geweten",
+    "auxiliary": "hebben",
+    "meaning": "to know",
+    "level": "A2",
+    "example": "Ik wist het antwoord."
+  },
+  {
+    "infinitive": "kunnen",
+    "past_singular": "kon",
+    "participle": "gekund",
+    "auxiliary": "hebben",
+    "meaning": "to be able to",
+    "level": "A2",
+    "example": "Ik kon goed zwemmen."
+  },
+  {
+    "infinitive": "willen",
+    "past_singular": "wilde",
+    "participle": "gewild",
+    "auxiliary": "hebben",
+    "meaning": "to want",
+    "level": "A2",
+    "example": "Ik wilde naar huis gaan."
+  },
+  {
+    "infinitive": "moeten",
+    "past_singular": "moest",
+    "participle": "gemoeten",
+    "auxiliary": "hebben",
+    "meaning": "must, to have to",
+    "level": "A2",
+    "example": "Ik moest werken."
+  },
+  {
+    "infinitive": "zeggen",
+    "past_singular": "zei",
+    "participle": "gezegd",
+    "auxiliary": "hebben",
+    "meaning": "to say",
+    "level": "A2",
+    "example": "Ik zei niets."
+  },
+  {
+    "infinitive": "eten",
+    "past_singular": "at",
+    "participle": "gegeten",
+    "auxiliary": "hebben",
+    "meaning": "to eat",
+    "level": "A1",
+    "example": "Ik at brood."
+  },
+  {
+    "infinitive": "drinken",
+    "past_singular": "dronk",
+    "participle": "gedronken",
+    "auxiliary": "hebben",
+    "meaning": "to drink",
+    "level": "A1",
+    "example": "Ik dronk water."
+  },
+  {
+    "infinitive": "brengen",
+    "past_singular": "bracht",
+    "participle": "gebracht",
+    "auxiliary": "hebben",
+    "meaning": "to bring",
+    "level": "A2",
+    "example": "Ik bracht hem het boek."
+  },
+  {
+    "infinitive": "kopen",
+    "past_singular": "kocht",
+    "participle": "gekocht",
+    "auxiliary": "hebben",
+    "meaning": "to buy",
+    "level": "A2",
+    "example": "Ik kocht een auto."
+  },
+  {
+    "infinitive": "slapen",
+    "past_singular": "sliep",
+    "participle": "geslapen",
+    "auxiliary": "hebben",
+    "meaning": "to sleep",
+    "level": "A2",
+    "example": "Ik sliep lang."
+  },
+  {
+    "infinitive": "blijven",
+    "past_singular": "bleef",
+    "participle": "gebleven",
+    "auxiliary": "zijn",
+    "meaning": "to stay, to remain",
+    "level": "A2",
+    "example": "Ik bleef thuis."
+  },
+  {
+    "infinitive": "houden",
+    "past_singular": "hield",
+    "participle": "gehouden",
+    "auxiliary": "hebben",
+    "meaning": "to hold, to love",
+    "level": "A2",
+    "example": "Ik hield van haar."
+  },
+  {
+    "infinitive": "staan",
+    "past_singular": "stond",
+    "participle": "gestaan",
+    "auxiliary": "hebben",
+    "meaning": "to stand",
+    "level": "A2",
+    "example": "Ik stond op het station."
+  },
+  {
+    "infinitive": "lopen",
+    "past_singular": "liep",
+    "participle": "gelopen",
+    "auxiliary": "zijn",
+    "meaning": "to walk",
+    "level": "A2",
+    "example": "Ik liep naar de winkel."
+  },
+  {
+    "infinitive": "werken",
+    "past_singular": "werkte",
+    "participle": "gewerkt",
+    "auxiliary": "hebben",
+    "meaning": "to work",
+    "level": "A1",
+    "example": "Ik werkte hard."
+  },
+  {
+    "infinitive": "spelen",
+    "past_singular": "speelde",
+    "participle": "gespeeld",
+    "auxiliary": "hebben",
+    "meaning": "to play",
+    "level": "A1",
+    "example": "Ik speelde voetbal."
+  },
+  {
+    "infinitive": "sterven",
+    "past_singular": "stierf",
+    "participle": "gestorven",
+    "auxiliary": "zijn",
+    "meaning": "to die",
+    "level": "B1",
+    "example": "Mijn opa stierf vorig jaar."
+  }
+]

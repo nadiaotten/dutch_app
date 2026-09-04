@@ -10,6 +10,7 @@ import random
 import subprocess
 import sys
 from pathlib import Path
+from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 VOCAB_FILE = SCRIPT_DIR / "vocabulary.json"
@@ -81,7 +82,7 @@ def test_prompt(prompt_msg: str) -> tuple[str, str]:
         sys.exit(1)
 
 
-def pick_level() -> str | None:
+def pick_level() -> Optional[str]:
     applescript_all = (
         'display alert "🇳🇱 Dutch Test" '
         'message "What level do you want to be tested on?" '
@@ -122,7 +123,7 @@ def filter_by_level(words: list[dict], level: str) -> list[dict]:
     return [w for w in words if w.get("level") == level]
 
 
-def ask_word(word: dict, question_num: int) -> bool | None:
+def ask_word(word: dict, question_num: int) -> Optional[bool]:
     """
     Ask a single test question. Returns:
       True  = correct

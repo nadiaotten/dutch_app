@@ -12,6 +12,7 @@ import sys
 import time
 from datetime import date
 from pathlib import Path
+from typing import Optional
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 VOCAB_FILE = SCRIPT_DIR / "vocabulary.json"
@@ -56,7 +57,7 @@ def save_history(history: list[str]) -> None:
         pass
 
 
-def load_today() -> dict | None:
+def load_today() -> Optional[dict]:
     if not TODAY_FILE.exists():
         return None
     try:
