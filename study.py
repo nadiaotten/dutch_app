@@ -97,8 +97,10 @@ def show_front(word: dict, card_num: int, total: int) -> str:
     """Show the Dutch word. Returns button clicked: 'Flip', 'Stop', or 'cancel'."""
     prompt = (
         f"Card {card_num} / {total}\n\n"
-        f"🇬🇧  {word['english']}\n\n"
-        f"What is this in Dutch?\n"
+        f"━━━━━━━━━━━━━━━━━\n"
+        f"🇳🇱  {word['dutch']}\n"
+        f"━━━━━━━━━━━━━━━━━\n\n"
+        f"What does this mean?\n\n"
         f"Think about it, then press Flip."
     )
     applescript = (
@@ -124,8 +126,11 @@ def show_front(word: dict, card_num: int, total: int) -> str:
 def show_back(word: dict) -> str:
     """Show the answer. Returns 'Got it', 'Not yet', or 'cancel'."""
     answer = (
-        f"🇬🇧  {word['english']}  →  🇳🇱  {word['dutch']}\n\n"
-        f"Example:\n{word.get('example', '')}\n\n"
+        f"━━━━━━━━━━━━━━━━━\n"
+        f"🇳🇱 {word['dutch']}\n"
+        f"🇬🇧 {word['english']}\n"
+        f"━━━━━━━━━━━━━━━━━\n\n"
+        f"📝 Example:\n{word.get('example', '')}\n\n"
         f"Did you know it?"
     )
     applescript = (
