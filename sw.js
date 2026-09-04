@@ -1,4 +1,4 @@
-const CACHE_NAME = "dutch-word-v1";
+const CACHE_NAME = "dutch-word-v2";
 const APP_ASSETS = [
   "./",
   "./index.html",
@@ -6,6 +6,7 @@ const APP_ASSETS = [
   "./app.js",
   "./manifest.webmanifest",
   "./vocabulary.json",
+  "./verbs.json",
   "./assets/icon.svg",
   "./assets/icon-maskable.svg",
 ];
