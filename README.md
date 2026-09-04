@@ -111,20 +111,37 @@ Shows one English word and asks for the Dutch translation.
 - **I don't know**: reveals the answer and example
 - **Later**: snoozes the quiz for 30 minutes in the browser
 
-### 2. Practice
+### 2. Study
 
-Continuous typing practice with a level picker: `A1`, `A2`, `B1`, or `All`.
-
-- wrong answers come back later in the same session
-- the session ends with a score summary
-
-### 3. Study
-
-Flashcards with the same level picker.
+Flashcards with level picker (`A1`, `A2`, `B1`, or `All`).
 
 - press `Flip` to reveal the answer
 - choose `Got it` or `Not yet`
 - cards marked `Not yet` come back in a review round
+
+### 3. Practice
+
+Continuous typing practice with level picker.
+
+- wrong answers come back later in the same session
+- the session ends with a score summary
+
+### 4. Test
+
+10-question quiz with level picker.
+
+- answer typed responses
+- see which answers were wrong at the end
+- shows correct translations for mistakes
+
+### 5. Verb Trainer
+
+Practice irregular and regular verb conjugations.
+
+- choose level (`A1`, `A2`, `B1`, or `All`)
+- choose form: past tense, participle, or both (random mix)
+- incorrect verbs come back in a review round
+- shows examples and auxiliary verbs
 
 ## Difficulty Levels
 
@@ -137,6 +154,8 @@ Every word in `vocabulary.json` has a `level` field:
 | **B1** | 64 | More advanced vocabulary |
 
 ## Add Your Own Words
+
+### Vocabulary
 
 Edit `vocabulary.json`. Each item looks like this:
 
@@ -151,33 +170,82 @@ Required fields:
 - `example`
 - `level`
 
-## Legacy macOS Version
+### Verbs
 
-The original desktop scripts are still in the repo:
+Edit `verbs.json` to add verb conjugations. Each item looks like this:
+
+```json
+{
+  "infinitive": "beginnen",
+  "past_singular": "begon",
+  "participle": "begonnen",
+  "auxiliary": "zijn",
+  "meaning": "to begin",
+  "level": "A2",
+  "example": "Ik begon te studeren."
+}
+```
+
+Required fields:
+
+- `infinitive` — base form
+- `past_singular` — ik form (e.g., "ik begon")
+- `participle` — past participle (e.g., "ben begonnen")
+- `auxiliary` — helper verb (`hebben` or `zijn`)
+- `meaning` — English translation
+- `level` — difficulty (`A1`, `A2`, `B1`)
+- `example` — usage example
+
+## macOS Scripts
+
+Run the trainers directly or use the main launcher:
+
+### All-in-one launcher
+
+```bash
+python3 app.py
+```
+
+Presents a menu to choose between all available modes.
+
+### Individual scripts
 
 | File | Purpose |
 |---|---|
+| `app.py` | Main menu launcher |
 | `dutch_word.py` | Daily quiz with macOS dialogs |
-| `practice.py` | On-demand typing drills |
-| `study.py` | On-demand flashcards |
-| `com.nadia.dutchword.plist` | `launchd` schedule |
-| `install.sh` | Installs the Mac schedule |
-| `.word_history.json` | Auto-generated rotation history |
-| `.word_today.json` | Auto-generated daily word state |
+| `study.py` | Flashcard mode with review rounds |
+| `practice.py` | Continuous typing practice |
+| `test.py` | 10-question quiz |
+| `verb.py` | Verb conjugation trainer |
 
-### Run the macOS scripts manually
+Run any script manually:
 
 ```bash
-python3 dutch_word.py
-python3 practice.py
-python3 study.py
+python3 app.py          # Main menu
+python3 dutch_word.py   # Daily quiz
+python3 study.py        # Study mode
+python3 practice.py     # Practice mode
+python3 test.py         # Test mode
+python3 verb.py         # Verb trainer
 ```
 
-### Install the macOS daily schedule
+### Schedule daily reminders (optional)
+
+To set up automatic daily reminders on macOS:
 
 ```bash
 bash install.sh
 ```
+
+This installs a `launchd` schedule that runs `dutch_word.py` daily.
+
+### Auto-generated files
+
+| File | Purpose |
+|---|---|
+| `.word_history.json` | Rotation history for daily words |
+| `.word_today.json` | Persistent daily word state |
 
 ## Dependencies
 
