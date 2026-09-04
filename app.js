@@ -489,7 +489,7 @@ function handlePracticeCheck() {
     window.setTimeout(() => {
       hideMessage(els.practice.feedback);
       showPracticeQuestion();
-    }, 900);
+    }, 2000);
     return;
   }
 
@@ -525,7 +525,7 @@ function handlePracticeReveal() {
   window.setTimeout(() => {
     hideMessage(els.practice.feedback);
     showPracticeQuestion();
-  }, 1200);
+  }, 2500);
 }
 
 function handlePracticeStop() {
@@ -666,7 +666,7 @@ function scoreStudyCard(knewIt) {
   window.setTimeout(() => {
     hideMessage(els.study.feedback);
     showNextStudyCard();
-  }, 900);
+  }, 2000);
 }
 
 function startVerbs() {
@@ -790,7 +790,7 @@ function handleVerbsCheck() {
     window.setTimeout(() => {
       hideMessage(els.verbs.feedback);
       showVerbsQuestion();
-    }, 900);
+    }, 2000);
     return;
   }
 
@@ -831,7 +831,7 @@ function handleVerbsReveal() {
   window.setTimeout(() => {
     hideMessage(els.verbs.feedback);
     showVerbsQuestion();
-  }, 1200);
+  }, 2500);
 }
 
 function handleVerbsStop() {
